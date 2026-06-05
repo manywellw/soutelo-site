@@ -7,6 +7,7 @@ Este é o repositório do site institucional da **Soutelo & Azevedo Advocacia**.
 ## 🚀 Funcionalidades
 
 * **Página Inicial (Landing Page):** Apresentação institucional e áreas de atuação jurídica.
+* **Imagens changes**
 * **Formulário de Contato Inteligente:** Envio de e-mails automatizados utilizando `Nodemailer`.
   * **Notificação para o Escritório:** Envio imediato dos dados do lead (Nome, Telefone, Área de Interesse e Mensagem) para o e-mail de atendimento.
   * **Confirmação para o Cliente:** Envio de um e-mail de resposta automática confirmando o recebimento do contato.
