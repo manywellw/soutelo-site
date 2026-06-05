@@ -1,0 +1,14 @@
+{
+  "name": "soutelo-azevedo-advocacia",
+  "version": "1.0.0",
+  "description": "Website institucional para Soutelo & Azevedo Advocacia",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "nodemailer": "^8.0.10"
+  }
+}
