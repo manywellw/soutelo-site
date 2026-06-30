@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const nodemailer = require('nodemailer'); // Importa o nodemailer para envio de e-mails
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Middleware para processar dados de formulários (Fale Conosco)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors()); // Adicione isso logo após app = express();
 
 // Rota Principal (Página Inicial)
 app.get('/', (req, res) => {
@@ -25,6 +27,7 @@ app.get('/politica-de-privacidade', (req, res) => {
 
 // Rota para receber os dados do formulário de contato e enviar por e-mail
 app.post('/api/contato', async (req, res) => {
+    console.log('Dados recebidos do formulário:');
     const { nome, telefone, area, email, mensagem } = req.body;
 
     // CONFIGURAÇÃO DO REMETENTE (Utilizando variáveis de ambiente)
@@ -76,24 +79,35 @@ app.post('/api/contato', async (req, res) => {
         `
     };
 
-    try {
+try {
+        console.log('Iniciando envio...');
+        
+        // Testa a conexão antes de enviar
+        await transporter.verify();
+        console.log('Conexão com Gmail verificada!');
+
         // Dispara os e-mails para os dois destinos ao mesmo tempo
         await Promise.all([
             transporter.sendMail(emailEscritorio),
             transporter.sendMail(emailCliente)
         ]);
 
-        console.log(`Sucesso: Notificações enviadas para o escritório e para o cliente (${email})`);
+        console.log('E-mails enviados com sucesso!');
         return res.status(200).json({ success: true, message: 'Mensagem enviada com sucesso!' });
+
     } catch (error) {
-        console.error('Erro ao enviar e-mail através do Nodemailer:', error);
-        // Retorna sucesso simulado para o usuário na tela não travar se o e-mail falhar na fase de testes
-        return res.status(200).json({ success: true, message: 'Mensagem enviada com sucesso! (Modo de segurança ativo)' });
+        // LOG REAL DO ERRO NO TERMINAL
+        console.error('ERRO DETALHADO NO NODEMAILER:', error);
+        
+        // ENVIA ERRO REAL PARA O NAVEGADOR
+        return res.status(500).json({ 
+            success: false, 
+            message: error.message // Isso mostrará o erro técnico no console do navegador
+        });
     }
 });
 
-// Inicialização do Servidor
-app.listen(PORT, () => {
-    console.log(`Servidor rodando com sucesso na porta ${PORT}`);
-    console.log(`Acesse: http://localhost:${PORT}`);
-});
+    // Rota para receber os dados do formulário de contato e enviar por e-mail
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando com sucesso na porta ${PORT}`);
+    });

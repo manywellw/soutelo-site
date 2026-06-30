@@ -7,8 +7,9 @@
     "start": "node --watch server.js"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^4.19.2",
-    "nodemailer": "^8.0.10"
+    "nodemailer": "^9.0.3"
   }
 }
