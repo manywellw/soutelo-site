@@ -4,72 +4,72 @@ let currentIndex = 0;
 const changeInterval = 5000; 
 
 function changeBackground() {
-    backgrounds[currentIndex].classList.remove('active');
-    currentIndex = (currentIndex + 1) % backgrounds.length;
-    backgrounds[currentIndex].classList.add('active');
+    if (backgrounds.length > 0) {
+        backgrounds[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % backgrounds.length;
+        backgrounds[currentIndex].classList.add('active');
+    }
 }
-
-setInterval(changeBackground, changeInterval);
-
+if (backgrounds.length > 0) {
+    setInterval(changeBackground, changeInterval);
+}
 
 // --- ENVIO DO FORMULÁRIO DE CONTATO (AJAX) ---
 const form = document.getElementById('form-contato');
 const responseDiv = document.getElementById('form-response');
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault(); 
-    
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData);
-    
-    responseDiv.style.color = '#b5996d';
-    responseDiv.innerText = 'Enviando sua mensagem...';
-    
-    try {
-        // ABRIR CONEXÃO COM URL COMPLETA
-        const response = await fetch('/api/contato', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
+if (form) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); 
         
-        // Verifica se a resposta do servidor foi bem-sucedida
-        if (!response.ok) {
-            throw new Error('Erro na resposta do servidor');
-        }
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        
+        responseDiv.style.color = '#b5996d';
+        responseDiv.innerText = 'Enviando sua mensagem...';
+        
+        try {
+            const response = await fetch('/api/contato', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) {
+                throw new Error('Erro na resposta do servidor');
+            }
 
-        const result = await response.json();
-        
-        if (result.success) {
-            responseDiv.style.color = 'green';
-            responseDiv.innerText = 'Mensagem enviada com sucesso! Entraremos em contato em breve.';
-            form.reset(); 
-        } else {
-            responseDiv.style.color = 'red';
-            responseDiv.innerText = 'Ocorreu um erro ao enviar. Tente novamente.';
-        }
+            const result = await response.json();
+            
+            if (result.success) {
+                responseDiv.style.color = 'green';
+                responseDiv.innerText = 'Mensagem enviada com sucesso! Entraremos em contato em breve.';
+                form.reset(); 
+            } else {
+                responseDiv.style.color = 'red';
+                responseDiv.innerText = 'Ocorreu um erro ao enviar. Tente novamente.';
+            }
         } catch (error) {
-        console.error('Erro detalhado da requisição:', error); // Log mais detalhado
-        responseDiv.style.color = 'red';
-        // Adiciona o erro na tela para você saber o motivo real
-        responseDiv.innerText = 'Erro ao conectar: ' + error.message; 
+            console.error('Erro detalhado da requisição:', error);
+            responseDiv.style.color = 'red';
+            responseDiv.innerText = 'Erro ao conectar: ' + error.message; 
         }
-});
+    });
+}
 
-// --- MENU MOBILE SIMPLES ---
-const menuToggle = document.getElementById('mobile-menu');
+// --- MENU MOBILE ---
+const menuToggle = document.getElementById('mobile-menu'); // Certifique-se que o ID no HTML é este
 const navMenu = document.querySelector('.nav-menu');
 
-menuToggle.addEventListener('click', () => {
-    if (navMenu.style.display === 'block') {
-        navMenu.style.display = 'none';
-    } else {
-        navMenu.style.display = 'block';
-        navMenu.style.backgroundColor = '#fff'; // Correção de sintaxe aqui
-    }
-});
+if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
+        // Alterna a classe 'active'. No CSS, você deve definir 
+        // que .nav-menu.active { display: block !important; }
+        navMenu.classList.toggle('active');
+    });
+}
 
 // --- MÁSCARA DE TELEFONE ---
 const inputTelefone = document.getElementById('telefone');

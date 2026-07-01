@@ -96,26 +96,77 @@ body {
     text-transform: uppercase;
     letter-spacing: 3px;
 }
+
+
+/* --- CSS Desktop (Global) --- */
+.nav-menu {
+    display: flex; /* Normal no desktop */
+}
+
 .nav-menu ul {
     display: flex;
+    flex-direction: row;
     list-style: none;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
 }
+
 .nav-menu a {
     text-decoration: none;
-    color: #444;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 15px;
-    transition: 0.3s;
+    color: #333; /* Cor do seu texto */
+    font-weight: 500;
 }
-.nav-menu a:hover {
-    color: var(--primary-gold);
-}
+
 .menu-toggle {
-    display: none;
-    font-size: 24px;
-    cursor: pointer;
+    display: none; /* Escondido no desktop */
 }
+
+/* --- CSS Mobile (Responsivo) --- */
+@media (max-width: 768px) {
+    /* 1. Esconde o menu completo por padrão */
+    .nav-menu {
+        display: none !important; 
+        flex-direction: column;
+        width: 100%;
+        background: white;
+        position: absolute;
+        top: 80px; 
+        left: 0;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra para destacar */
+    }
+
+    /* 2. Mostra quando a classe .active for adicionada pelo JS */
+    .nav-menu.active {
+        display: flex !important;
+    }
+
+    /* 3. Ajuste da lista dentro do menu mobile */
+    .nav-menu ul {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* 4. Mostra o botão de menu no celular */
+    .menu-toggle {
+        display: block !important;
+        cursor: pointer;
+        font-size: 24px;
+        padding: 10px;
+    }
+}   
+
+/* 5. Ajustes finais */
+.nav-menu a {
+    display: block;
+    padding: 10px;
+}
+
+.nav-menu a:hover {
+    background-color: #f0f0f0;
+}
+
 
 /* Carrossel Dinâmico de Fundo (Hero Section) */
 .hero-section {

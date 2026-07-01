@@ -7,6 +7,8 @@ const nodemailer = require('nodemailer'); // Importa o nodemailer para envio de 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
+
 // Configura a pasta public para arquivos estáticos (CSS, JS, Imagens)
 app.use(express.static(path.join(__dirname, 'public')));
 
